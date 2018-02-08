@@ -1,0 +1,31 @@
+.header-bar{
+    color:#fff;
+    position: absolute;
+    width: 180px;
+    text-align: center;
+}
+b{
+    font-size: 24px;
+}
+a{
+    text-decoration: none;
+    color: #333;
+}
+.header-btn{
+    color: #CDDE7A;
+}
+.segment a{
+    background: #fff;
+    padding: 4px;
+    border-radius: 4px;
+}
+ul{
+    padding: 0;
+}
+ul li { 
+    list-style-type:none; 
+    margin-top: 15px;
+    display: grid;
+    width: 160px;
+    float: right;
+}

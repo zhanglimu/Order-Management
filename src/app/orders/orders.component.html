@@ -1,0 +1,27 @@
+<header class="header-bar">
+  <p>
+    <img src="./assets/logo.png" alt="logo">
+  </p>
+  <p>
+    <b>订单管理系统</b>
+  </p>
+  <p>
+    <span>Hello!&nbsp;&nbsp;{{username}}</span>
+  </p>
+  <p>
+    <span>第&nbsp;&nbsp;{{loginNum}}&nbsp;&nbsp;次登录</span>
+  </p>
+  <p>
+    <a class="header-btn" (click)="Signout()">退出登录</a>
+  </p>
+  <div class="segment">
+    <ul>
+      <li class="segment-button" [class.selected]="switchIndex === '0'" (click)="switch('0')">
+          <a href="./orderdetail">Order Management</a>
+      </li>
+      <!-- <li class="segment-button" [class.selected]="switchIndex === '1'" (click)="switch('1')">
+          <a href="./orderlist">Take Rates</a>
+      </li> -->
+    </ul>
+  </div>
+</header>

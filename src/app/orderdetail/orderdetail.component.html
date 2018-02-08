@@ -1,0 +1,136 @@
+<app-orders></app-orders>
+<div class="main">
+    <div class="clearfix">
+        <form #orderForm="ngForm" (ngSubmit)="onCha(orderForm.value)">
+            <p class="word">
+                <span>订单ID：</span>
+                <input id="tk" type="text" required value="" name="dingdan" [(ngModel)]="dingdan">
+                <span>彩种：</span>
+                <select id="type" name="cai" [(ngModel)]="ca">
+                    <option *ngFor="let caiz of cai;" [value]='caiz.lottery_type'>
+                        {{caiz.lottery_name}}
+                    </option>
+                </select>
+                <span>渠道：</span>
+                <select id="channel" name="qudao" [(ngModel)]="name">
+                    <option *ngFor="let version of resut;" [value]='version.agentNum'>
+                        {{version.agentName}}
+                    </option>
+                </select>
+                <span>订单日期：</span>
+                <select id="time" name="day" [(ngModel)]="da">
+                    <option value="0">当前表</option>
+                    <option value="1">历史表</option>
+                </select>
+                <button class="selss" type="submit">查询</button>
+            </p>
+        </form>
+        <form>
+            <p class="word">
+                <button (click)="inquiry(ca)">导出询价内容</button>
+                <button (click)="transaction(ca)">导出交易内容</button>
+            </p>
+        </form>
+    </div>
+    <div class="row-fluid">
+        <p><sub>*</sub>订单信息</p>
+        <table class="table">
+            <thead>
+                <tr class="odds">
+                    <th>交易状态</th>
+                    <th>原始投注额</th>
+                    <th>订单类型</th>
+                    <th>交易金额</th>
+                    <th>最大中奖额</th>
+                    <th>抽成比例</th>
+                    <th>渠道促销额</th>
+                    <th>caiex加奖额</th>
+                    <th>订单状态</th>
+                    <th>中奖金额</th>
+                    <th>第三方状态</th>
+                    <th>回收价格</th>
+                </tr>
+            </thead>
+            <tbody id="firstr">
+                <tr *ngIf="ding">
+                    <td>{{ding.trade_type_name}}</td>
+                    <td>{{ding.totalInvestment}}</td>
+                    <td>{{ding.inplay_name}}</td>
+                    <td>{{ding.trade_price}}</td>
+                    <td>--</td>  
+                    <!-- {{ding.total_price}} -->
+                    <td>--</td>  
+                    <!-- {{ding.rakeRate}} -->
+                    <td>{{ding.bonus}}</td>
+                    <td>{{ding.cxBonus}}</td>
+                    <td>{{ding.state_name}}</td>
+                    <td>{{ding.winMoney}}</td>
+                    <td>{{ding.recycleState_name}}</td>
+                    <td>{{ding.recyclePrice}}</td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="Nodata">
+                <tr>
+                    <td colspan="12">{{data}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><sub>*</sub>方案详情</p>
+        <table class="table">
+            <thead>
+                <tr class="odds">
+                    <th>Betline</th>
+                </tr>
+            </thead>
+            <tbody id="firstr">
+                <tr *ngIf="betline">
+                    <td style="display: block;height:72px; overflow-y:scroll;">{{betline.betline}}</td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="Nodata1">
+                <tr>
+                    <td>{{data1}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            <sub>*</sub>状态详情
+            <button (click)="exporter(dingdan,ca,name,da)" class="right">导出excel</button>
+        </p>
+        <table class="table">
+            <thead>
+                <tr class="odds">
+                    <th>时间</th>
+                    <th>事件</th>
+                    <th>说明</th>
+                </tr>
+            </thead>
+            <tbody id="first" *ngIf="logs">
+                <tr class="lists" *ngFor="let log of logs">
+                    <td>{{log.log_time}}</td>
+                    <td>{{log.event_type}}</td>
+                    <td>{{log.prompt}}</td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="Nodata2">
+                <tr>
+                    <td colspan="3">{{data2}}</td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td colspan="3">
+                        <el-pagination [total]="count" 
+                        [page-size]="11" 
+                        *ngIf="count>0" 
+                        [page-count]="pageCount" 
+                        (modelChange)="modelChange($event)" 
+                        [layout]="['prev', 'pager', 'next', 'jumper', 'total']"
+                        >
+                        </el-pagination>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
