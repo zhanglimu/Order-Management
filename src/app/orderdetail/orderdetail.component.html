@@ -5,29 +5,61 @@
             <p class="word">
                 <span>订单ID：</span>
                 <input id="tk" type="text" required value="" name="dingdan" [(ngModel)]="dingdan">
+                </p>
+                <p class="word">
                 <span>彩种：</span>
                 <select id="type" name="cai" [(ngModel)]="ca">
-                    <option *ngFor="let caiz of cai;" [value]='caiz.lottery_type'>
-                        {{caiz.lottery_name}}
+                    <option *ngFor="let caiz of cai;" [value]='caiz.key'>
+                        {{caiz.value}}
                     </option>
-                </select>
+                </select><br />
                 <span>渠道：</span>
                 <select id="channel" name="qudao" [(ngModel)]="name">
                     <option *ngFor="let version of resut;" [value]='version.agentNum'>
                         {{version.agentName}}
                     </option>
                 </select>
-                <span>订单日期：</span>
+                </p>
+                <p class="word">
+                <span>历史数据：</span>
                 <select id="time" name="day" [(ngModel)]="da">
                     <option value="0">当前表</option>
                     <option value="1">历史表</option>
+                </select><br />
+                <span>事件类型：</span>
+                <select id="event" name="eventer" [(ngModel)]="er">
+                    <option value="all">All</option>
+                    <!-- <option *ngFor="let ope of opera;" [value]='ope.key'>
+                        {{ope.value}}
+                    </option> -->
+                    <option value="1,2">询价请求,询价结果</option>
+                    <option value="3,4">交易请求,交易结束</option>
+                    <option value="5,6">开始通知收票,收票通知结果</option>
+                    <option value="7">订单入库</option>
+                    <option value="8,9">订单回收请求,订单回收结果</option>
+                    <option value="10,11">方案查询请求,方案查询结果</option>
+                    <option value="12">方案撤销</option>
+                    <option value="13">提交交易消息到RM</option>
+                    <option value="14,15">开始通知拒票,拒票通知结果</option>
                 </select>
+            </p>
+            <p class="word">
+                <!-- <input name="checkbox" type="checkbox" value="checkbox" checked="checked" /> -->
                 <button class="selss" type="submit">查询</button>
             </p>
         </form>
         <form>
             <p class="word">
-                <button (click)="inquiry(ca)">导出询价内容</button>
+                <span>起始时间：</span>
+                <input type="text" id="startime" class="Wdate"
+                onfocus="WdatePicker({skin:'whyGreen',startDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd'})" />
+                <br />
+                <span>截止时间：</span>
+                <input type="text" id="endtime" class="Wdate"
+                onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd'})" />
+            </p>
+            <p class="word">
+                <button (click)="inquiry(ca)">导出询价内容</button><br />
                 <button (click)="transaction(ca)">导出交易内容</button>
             </p>
         </form>
@@ -39,34 +71,18 @@
                 <tr class="odds">
                     <th>交易状态</th>
                     <th>原始投注额</th>
-                    <th>订单类型</th>
-                    <th>交易金额</th>
-                    <th>最大中奖额</th>
                     <th>抽成比例</th>
                     <th>渠道促销额</th>
-                    <th>caiex加奖额</th>
-                    <th>订单状态</th>
                     <th>中奖金额</th>
-                    <th>第三方状态</th>
-                    <th>回收价格</th>
                 </tr>
             </thead>
             <tbody id="firstr">
                 <tr *ngIf="ding">
                     <td>{{ding.trade_type_name}}</td>
                     <td>{{ding.totalInvestment}}</td>
-                    <td>{{ding.inplay_name}}</td>
-                    <td>{{ding.trade_price}}</td>
-                    <td>--</td>  
-                    <!-- {{ding.total_price}} -->
-                    <td>--</td>  
-                    <!-- {{ding.rakeRate}} -->
+                    <td>{{ding.rakeRate}}</td>
                     <td>{{ding.bonus}}</td>
-                    <td>{{ding.cxBonus}}</td>
-                    <td>{{ding.state_name}}</td>
                     <td>{{ding.winMoney}}</td>
-                    <td>{{ding.recycleState_name}}</td>
-                    <td>{{ding.recyclePrice}}</td>
                 </tr>
             </tbody>
             <tbody *ngIf="Nodata">
@@ -77,14 +93,20 @@
         </table>
         <p><sub>*</sub>方案详情</p>
         <table class="table">
-            <thead>
-                <tr class="odds">
-                    <th>Betline</th>
+            <thead *ngIf="way">
+                <tr class="odds"*ngFor="let times of way">
+                    <th>过关方式：<span>{{times.e0}}</span>&nbsp;&nbsp;倍数：<span>{{times.e1}}</span></th>
                 </tr>
             </thead>
-            <tbody id="firstr">
-                <tr *ngIf="betline">
-                    <td style="display: block;height:72px; overflow-y:scroll;">{{betline.betline}}</td>
+            <tbody id="firstr" id="scroll" *ngIf="betline">
+                <tr class="lists" *ngFor="let betline of betline" style="display:block;">
+                    <td>
+                        <strong class="left strong">{{betline.mhcode}}</strong>
+                        <ul class="bel" *ngFor="let key of betline.data">
+                            <li class="left had">{{key.jackpot}}&nbsp;&nbsp;</li>
+                            <li class="left eq">{{key.option}}&nbsp;&nbsp;</li>；<br>
+                        </ul>
+                    </td>
                 </tr>
             </tbody>
             <tbody *ngIf="Nodata1">
@@ -100,35 +122,68 @@
         <table class="table">
             <thead>
                 <tr class="odds">
-                    <th>时间</th>
-                    <th>事件</th>
-                    <th>说明</th>
+                    <th style="width:30%;">时间</th>
+                    <th style="width:10%;">事件</th>
+                    <th style="width:60%;">说明</th>
+                </tr>
+            </thead>
+        </table>
+        <table class="table" id="scro">
+            <thead style="display:none;">
+                <tr class="odds">
+                    <th style="width:30%;">时间</th>
+                    <th style="width:10%;">事件</th>
+                    <th style="width:60%;">说明</th>
                 </tr>
             </thead>
             <tbody id="first" *ngIf="logs">
                 <tr class="lists" *ngFor="let log of logs">
-                    <td>{{log.log_time}}</td>
-                    <td>{{log.event_type}}</td>
-                    <td>{{log.prompt}}</td>
+                    <td style="visibility:hidden;">0</td>
+                    <td style="width:30%;">{{log.log_time}}</td>
+                    <td style="width:10%;">{{log.event_type}}</td>
+                    <td class="box-card" #card style="width:60%;">{{log.prompt}}
+                        <button id="btnshow" (click)="showdiv(log.log_time,log.mcode)" *ngIf="log.p">详情</button>
+                        <div id="bg"></div>
+                        <div id="show">
+                            <input id="btnclose" value="Close" (click)="hidediv()" type="button">
+                            <table>
+                                <thead class="fontse">
+                                    <tr>
+                                        <th style="width:50%;">时间</th>
+                                        <th style="width:30%;">操作方式</th>
+                                        <th style="width:20%;">玩法</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <table id="scro">
+                                <thead style="display:none;">
+                                    <tr>
+                                        <th style="width:50%;">时间</th>
+                                        <th style="width:30%;">操作方式</th>
+                                        <th style="width:20%;">玩法</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="barrier" *ngIf="details">
+                                    <tr *ngFor="let de of details">
+                                        <td style="visibility:hidden;">0</td>
+                                        <td style="width:50%;">{{de.logDate}}</td>
+                                        <td style="width:30%;">{{de.event}}</td>
+                                        <td style="width:20%;">{{de.matchPool}}</td>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="Nodata3">
+                                    <tr>
+                                        <td colspan="3">{{data3}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
             <tbody *ngIf="Nodata2">
                 <tr>
                     <td colspan="3">{{data2}}</td>
-                </tr>
-            </tbody>
-            <tbody>
-                <tr>
-                    <td colspan="3">
-                        <el-pagination [total]="count" 
-                        [page-size]="11" 
-                        *ngIf="count>0" 
-                        [page-count]="pageCount" 
-                        (modelChange)="modelChange($event)" 
-                        [layout]="['prev', 'pager', 'next', 'jumper', 'total']"
-                        >
-                        </el-pagination>
-                    </td>
                 </tr>
             </tbody>
         </table>

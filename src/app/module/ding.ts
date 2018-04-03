@@ -53,7 +53,10 @@ export class Ding {
         this.trade_type_name = "交易成功";
         break;
       case 2:
-        this.trade_type_name = "交易失败";
+        this.trade_type_name = "待取消审批";
+        break;
+      case 3:
+        this.trade_type_name = "取消审批通过";
         break;
     }
     switch (inplay) {

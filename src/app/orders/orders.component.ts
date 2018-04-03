@@ -32,6 +32,9 @@ export class OrdersComponent implements OnInit {
     this.switchIndex = index;
     localStorage.setItem('SWITCH_INDEX', this.switchIndex);
   }
+  // orderdetail(){
+  //   location.reload()
+  // }
   //退出登录
   Signout(){
     this.Loginout.Loginout().subscribe(response=>{

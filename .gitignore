@@ -41,3 +41,10 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+
+##
+aws-oms
+aws2.0-oms
+.vscode/
+yiwu2.0-oms/

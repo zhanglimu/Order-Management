@@ -11,9 +11,8 @@ import { OrdersComponent } from './orders/orders.component';
 // import { OrderlistService} from './service/orderlist.service';
 import { LoginComponent }  from './login/login.component';
 import { LoginService} from './service/login.service';
-import { PageService} from './service/page.service';
 import { LoginoutService} from './service/loginout.service';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes} from '@angular/router';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ElModule } from 'element-angular';
@@ -25,8 +24,8 @@ export const ROUTES : Routes =[
   // {path :'orderlist', component:OrderlistComponent},
   {path :'orders', component:OrdersComponent},
   {path :'orderdetail', component:OrderdetailComponent},
-  
 ]
+
 //引用文件
 @NgModule({
   imports: [
@@ -35,7 +34,14 @@ export const ROUTES : Routes =[
     BrowserAnimationsModule,
     ElModule.forRoot(),
     HttpModule,
-    RouterModule.forRoot(ROUTES)
+    // RouterModule.forRoot(ROUTES)
+    RouterModule.forRoot(
+        ROUTES,
+        {
+          enableTracing: false,
+          useHash: true,
+        }
+    )
   ],
   declarations: [
     AppComponent, 
@@ -44,7 +50,9 @@ export const ROUTES : Routes =[
     OrdersComponent,
     OrderdetailComponent
   ],
-  providers: [OrderdetailService,PageService,LoginService,LoginoutService],
+  providers: [
+    OrderdetailService,LoginService,LoginoutService,
+  ],
   bootstrap: [AppComponent]
  
 })
