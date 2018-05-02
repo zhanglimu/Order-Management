@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./caiex-oms/out-tsc",
+    "outDir": "./yiwu2.0-oms/out-tsc",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",

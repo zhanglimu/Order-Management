@@ -6,7 +6,7 @@
   "apps": [
     {
       "root": "src",
-      "outDir": "caiex-oms",
+      "outDir": "yiwu2.0-oms",
       "assets": [
         "assets",
         "favicon.ico"
